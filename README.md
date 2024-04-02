@@ -1,6 +1,6 @@
 # frontend-service
 
-This repository contains Kubernetes manifests for deploying a frontend application using a Kubernetes Deployment and Service. Additionally, it includes a Jenkins pipeline for building, running, pushing Docker images to Docker Hub, and deploying to an Amazon EKS cluster. ##Kubernetes Deployment This Deployment creates two replicas of the frontend application and exposes it via a NodePort service on port 8079.
+This repository contains Kubernetes manifests for deploying a frontend application using a Kubernetes Deployment and Service. However, it includes a Jenkins pipeline for building, running, pushing Docker images to Docker Hub, and deploying to an Amazon EKS cluster. Kubernetes Deployment This Deployment creates two replicas of the frontend application and exposes it via a NodePort service on port 8079.
 
 Jenkins Pipeline
 The Jenkins pipeline defined in the Jenkinsfile automates the build, run, and deployment processes. It performs the following stages:
