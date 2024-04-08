@@ -1,5 +1,5 @@
 pipeline {
-    environment {
+    environment { //for docker
         DOCKER_ID = credentials('DOCKER_ID')
         DOCKER_IMAGE_FRONT_END = "front-end"
         DOCKER_TAG = "${BUILD_ID}"
