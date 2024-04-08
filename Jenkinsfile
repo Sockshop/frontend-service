@@ -30,6 +30,31 @@ agent any
                 sh 'docker login -u $DOCKER_ID -p $DOCKER_PASS'
                 sh 'docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG && docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
             }
-        }       
-    }
+        }
+        stage('Deploy EKS') {
+            environment { // import Jenkin global variables 
+                //KUBECONFIG = credentials("EKS_CONFIG")  
+                AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+                AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+                AWSREGION = credentials("AWS_REGION")
+                EKSCLUSTERNAME = credentials("EKS_CLUSTER")
+            }
+            steps {
+                sh 'rm -Rf .kube'
+                sh 'mkdir .kube'
+                sh 'touch .kube/config'
+                sh 'sudo chmod 777 .kube/config'
+                sh 'rm -Rf .aws'
+                sh 'mkdir .aws'
+                sh 'aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
+                sh 'aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
+                sh 'aws configure set region $AWSREGION'
+                sh 'aws configure set output text'                
+                sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
+                sh 'aws eks list-clusters'
+                sh 'kubectl cluster-info --kubeconfig .kube/config'
+                sh 'kubectl apply -f ./manifests -n $NAMESPACE --kubeconfig .kube/config'
+            }
+        }      
+    } 
 }
