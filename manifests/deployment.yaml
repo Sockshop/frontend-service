@@ -20,7 +20,7 @@ spec:
         - name: frontend
           image: kentronic/front-end:latest
           ports:
-            - containerPort: 8079
+            - containerPort: 8080
           securityContext:
             capabilities:
               drop: 
