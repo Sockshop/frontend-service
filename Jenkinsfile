@@ -46,17 +46,17 @@ agent any
                         //sh "kubectl apply -f nginx-deployment.yaml"
                         //sh "kubectl apply -f nginx-service.yaml"
                         //sh 'kubectl get namespace'
-                        sh 'kubectl create namespace NAMESPACE'
-                        sh 'kubectl apply -f ./manifests -n NAMESPACE'
+                        sh 'kubectl create namespace $NAMESPACE'
+                        sh 'kubectl apply -f ./manifests -n $NAMESPACE'
                         sh 'aws configure set output text'                
-                        sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
+                        //sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
                         sh 'aws eks list-clusters'
-                        sh 'kubectl cluster-info --kubeconfig .kube/config'
+                        /*sh 'kubectl cluster-info --kubeconfig .kube/config'
                         sh 'kubectl apply -f ./manifests -n NAMESPACE --kubeconfig .kube/config'
                         sh 'sleep 30'
-                        sh 'kubectl get ingress -n NAMESPACE'
-                        sh 'kubectl get pods -n NAMESPACE'
-                        sh 'kubectl get svc -n $NAMESPACE'
+                        sh 'kubectl get ingress -n $NAMESPACE'
+                        sh 'kubectl get pods -n $NAMESPACE'
+                        sh 'kubectl get svc -n $NAMESPACE'*/
                     }
                 }
             }
