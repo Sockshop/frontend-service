@@ -41,14 +41,14 @@ agent any
             }
             steps {
                 script {
-                    dir('frontend-service') {
+                    dir('manifests') {
                         sh "aws eks update-kubeconfig --name sock-shop-eks --region $AWSREGION"
                         //sh "kubectl apply -f nginx-deployment.yaml"
                         //sh "kubectl apply -f nginx-service.yaml"
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace $NAMESPACE'
                         sh 'ls'
-                        sh 'kubectl apply -f ./manifests/deployment.yaml -n $NAMESPACE'
+                        sh 'kubectl apply -f ./deployment.yaml -n $NAMESPACE'
                         sh 'aws configure set output text'                
                         //sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
                         sh 'aws eks list-clusters'
