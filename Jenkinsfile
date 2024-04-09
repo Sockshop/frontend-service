@@ -8,7 +8,7 @@ pipeline {
     }
 agent any
     stages {
-        stage('Build') {
+        /*stage('Build') {
             steps { //create a loop somehow??
             sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG .'
                    }
@@ -29,7 +29,7 @@ agent any
                 sh 'docker image tag $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
                 sh 'docker login -u $DOCKER_ID -p $DOCKER_PASS'
                 sh 'docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG && docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
-            }
+            }*/
         }
         stage('Deploy EKS') {
             environment { // import Jenkin global variables 
