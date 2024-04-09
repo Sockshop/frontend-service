@@ -47,7 +47,8 @@ agent any
                         //sh "kubectl apply -f nginx-service.yaml"
                         //sh 'kubectl get namespace'
                         sh 'kubectl create namespace $NAMESPACE'
-                        sh 'kubectl apply -f ./manifests -n $NAMESPACE'
+                        sh 'ls'
+                        sh 'kubectl apply -f ./manifests/deployment.yaml -n $NAMESPACE'
                         sh 'aws configure set output text'                
                         //sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
                         sh 'aws eks list-clusters'
