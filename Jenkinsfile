@@ -36,25 +36,30 @@ agent any
                 //KUBECONFIG = credentials("EKS_CONFIG")  
                 AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
                 AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-                AWSREGION = credentials("AWS_REGION")
-                EKSCLUSTERNAME = credentials("EKS_CLUSTER")
+                AWSREGION = "eu-west-3"
+                EKSCLUSTERNAME = "sock-shop-eks"
             }
             steps {
-                /*sh 'rm -Rf .kube'
-                sh 'mkdir .kube'
-                sh 'touch .kube/config'
-                sh 'sudo chmod 777 .kube/config'
-                sh 'rm -Rf .aws'
-                sh 'mkdir .aws'*/
-                sh 'aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
-                sh 'aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
-                sh 'aws configure set region $AWSREGION'
-                sh 'aws configure set output text'                
-                sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
-                sh 'aws eks list-clusters'
-                sh 'kubectl cluster-info --kubeconfig .kube/config'
-                sh 'kubectl apply -f ./manifests -n $NAMESPACE --kubeconfig .kube/config'
+                script {
+                    dir('frontend-service') {
+                        sh "aws eks update-kubeconfig --name sock-shop-eks"
+                        //sh "kubectl apply -f nginx-deployment.yaml"
+                        //sh "kubectl apply -f nginx-service.yaml"
+                        //sh 'kubectl get namespace'
+                        sh 'kubectl create namespace SockShop'
+                        sh 'kubectl apply -f ./manifests -n SockShop'
+                        sh 'aws configure set output text'                
+                        sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
+                        sh 'aws eks list-clusters'
+                        sh 'kubectl cluster-info --kubeconfig .kube/config'
+                        sh 'kubectl apply -f ./manifests -n SockShop --kubeconfig .kube/config'
+                        sh 'sleep 30'
+                        sh 'kubectl get ingress -n SockShop'
+                        sh 'kubectl get pods -n SockShop'
+                        sh 'kubectl get svc -n SockShop'
+                    }
+                }
             }
-        }      
-    } 
+        }
+    }           
 }
