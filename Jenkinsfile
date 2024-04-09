@@ -4,7 +4,7 @@ pipeline {
         DOCKER_IMAGE_FRONT_END = "front-end"
         DOCKER_TAG = "${BUILD_ID}"
         BUILD_AGENT  = ""
-        NAMESPACE = credentials("NAMESPACE")
+        //NAMESPACE = credentials("NAMESPACE")
     }
 agent any
     stages {
