@@ -42,7 +42,7 @@ agent any
             steps {
                 script {
                     dir('frontend-service') {
-                        sh "aws eks update-kubeconfig --name sock-shop-eks"
+                        sh "aws eks update-kubeconfig --name sock-shop-eks --region $AWSREGION"
                         //sh "kubectl apply -f nginx-deployment.yaml"
                         //sh "kubectl apply -f nginx-service.yaml"
                         //sh 'kubectl get namespace'
