@@ -4,11 +4,11 @@ pipeline {
         DOCKER_IMAGE_FRONT_END = "front-end"
         DOCKER_TAG = "${BUILD_ID}"
         BUILD_AGENT  = ""
-        NAMESPACE = "sockshop"
+        NAMESPACE = credentials("NAMESPACE")
     }
 agent any
     stages {
-        /*stage('Build') {
+        stage('Build') {
             steps { //create a loop somehow??
             sh 'docker build -t $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG .'
                    }
@@ -30,8 +30,8 @@ agent any
                 sh 'docker login -u $DOCKER_ID -p $DOCKER_PASS'
                 sh 'docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG && docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
             }
-        }*/
-        stage('Deploy EKS') {
+        }
+        /*stage('Deploy EKS') {
             environment { // import Jenkin global variables 
                 //KUBECONFIG = credentials("EKS_CONFIG")  
                 AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
@@ -63,6 +63,6 @@ agent any
                     }
                 }
             }
-        }
+        }*/
     }           
 }
