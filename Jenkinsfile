@@ -48,7 +48,7 @@ agent any
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace ${NAMESPACE}'
                         // Define the namespace
-                        def NAMESPACE = credentials('NAMESPACE')
+                        def NAMESPACE = "sockshop"
                         //Check if the namespace exists
                         def namespaceExists = sh(script: 'kubectl get namespace ${NAMESPACE}', returnStatus: true)
                         if (namespaceExists == 0) {
