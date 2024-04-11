@@ -23,7 +23,7 @@ agent any
         }
         stage('Push') {
             environment {
-                DOCKER_PASS = credentials('DOCKER_HUB_PASS')
+                DOCKER_PASS = credentials("DOCKER_HUB_PASS")
             }
             steps {
                 sh 'docker image tag $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
@@ -48,7 +48,7 @@ agent any
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace ${NAMESPACE}'
                         // Define the namespace
-                        def NAMESPACE = credentials('NAMESPACE')
+                        //def NAMESPACE = credentials('NAMESPACE')
                         // Check if the namespace exists
                         def namespaceExists = sh(script: 'kubectl get namespace ${NAMESPACE}', returnStatus: true)
                         if (namespaceExists == 0) {
