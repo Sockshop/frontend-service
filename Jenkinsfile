@@ -1,9 +1,9 @@
 pipeline {
     environment { //for docker
         DOCKER_ID = credentials('DOCKER_ID')
-        DOCKER_IMAGE_FRONT_END = 'front-end'
-        DOCKER_TAG = '${BUILD_ID}'
-        BUILD_AGENT  = ''
+        DOCKER_IMAGE_FRONT_END = "front-end"
+        DOCKER_TAG = "${BUILD_ID}"
+        BUILD_AGENT  = ""
         NAMESPACE = credentials('NAMESPACE')
     }
 agent any
