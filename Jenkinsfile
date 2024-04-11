@@ -48,8 +48,8 @@ agent any
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace ${NAMESPACE}'
                         // Define the namespace
-                        //def NAMESPACE = credentials('NAMESPACE')
-                        // Check if the namespace exists
+                        def NAMESPACE = credentials('NAMESPACE')
+                        //Check if the namespace exists
                         def namespaceExists = sh(script: 'kubectl get namespace ${NAMESPACE}', returnStatus: true)
                         if (namespaceExists == 0) {
                             echo 'Namespace '${NAMESPACE}' already exists.'
