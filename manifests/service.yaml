@@ -6,7 +6,7 @@ spec:
   selector:
     app: frontend-deployment
   ports:
-    - protocol: TCP
-      port: 8079
-      targetPort: 8079
-  type: LoadBalancer
+  - protocol: TCP
+    port: 8079
+    targetPort: 8079
+  type: NodePort

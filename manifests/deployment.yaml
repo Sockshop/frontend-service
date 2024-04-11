@@ -2,14 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
-  labels: 
+  labels:
     app: frontend-deployment
 spec:
   selector:
     matchLabels:
       app: frontend-deployment
   replicas: 3
-  strategy: 
+  strategy:
     type: RollingUpdate
   template:
     metadata:
@@ -17,18 +17,18 @@ spec:
         app: frontend-deployment
     spec:
       containers:
-        - name: frontend
-          image: kentronic/front-end:latest
-          ports:
-            - containerPort: 8079
-          securityContext:
-            capabilities:
-              drop: 
-                - all
-          resources:
-            limits:
-              cpu: 300m
-              memory: 300Mi
-            requests:
-              cpu: 100m
-              memory: 100Mi        
+      - name: frontend
+        image: kentronic/front-end:latest
+        ports:
+        - containerPort: 8079
+        securityContext:
+          capabilities:
+            drop:
+            - all
+        resources:
+          limits:
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
