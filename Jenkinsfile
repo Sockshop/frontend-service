@@ -37,42 +37,38 @@ agent any
                 AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
                 AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
                 AWSREGION = "eu-west-3"
-                EKSCLUSTERNAME = "sock-shop-eks"
+                EKSCLUSTERNAME = credentials('EKS_CLUSTER')
             }
             steps {
                 script {
-                    dir('manifests') {
-                        sh "aws eks update-kubeconfig --name sock-shop-eks --region $AWSREGION"
-                        //sh "kubectl apply -f nginx-deployment.yaml"
-                        //sh "kubectl apply -f nginx-service.yaml"
-                        //sh 'kubectl get namespace'
-                        //sh 'kubectl create namespace $NAMESPACE'
-                        // Define the namespace
-                        def NAMESPACE = "sockshop"
-                        // Check if the namespace exists
-                        def namespaceExists = sh(script: "kubectl get namespace $NAMESPACE", returnStatus: true)
+                    sh 'rm -Rf .kube'
+                    sh 'mkdir .kube'
+                    sh 'touch .kube/config'
+                    sh 'chmod 777 .kube/config'
+                    sh 'rm -Rf .aws'
+                    sh 'mkdir .aws'
+                    sh 'aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
+                    sh 'aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
+                    sh 'aws configure set region $AWSREGION'
+                    sh 'aws eks update-kubeconfig --name $EKSCLUSTERNAME --region $AWSREGION --kubeconfig .kube/config'
+                    // Check if the namespace exists
+                        def namespaceExists = sh(script: "kubectl get namespace \$NAMESPACE", returnStatus: true)
                         if (namespaceExists == 0) {
-                            echo "Namespace '$NAMESPACE' already exists."
+                            echo "Namespace \$NAMESPACE already exists."
                         } else {
                             // Create the namespace
-                            sh "kubectl create namespace $NAMESPACE"
-                            echo "Namespace '$NAMESPACE' created."
+                            sh 'kubectl create namespace \$NAMESPACE'
+                            echo "Namespace \$NAMESPACE created."
                         }
-                        sh 'ls'
-                        sh 'kubectl apply -f ./deployment.yaml -n $NAMESPACE'
-                        sh 'kubectl apply -f ./service.yaml -n $NAMESPACE'
-                        sh 'aws configure set output text'                
-                        //sh 'aws eks --region $AWSREGION update-kubeconfig --name $EKS_CLUSTER --kubeconfig .kube/config' 
-                        //sh 'aws eks list-clusters'
-                        /*sh 'kubectl cluster-info --kubeconfig .kube/config'
-                        sh 'kubectl apply -f ./manifests -n NAMESPACE --kubeconfig .kube/config'
-                        sh 'sleep 30'
-                        sh 'kubectl get ingress -n $NAMESPACE'
-                        sh 'kubectl get pods -n $NAMESPACE'
-                        sh 'kubectl get svc -n $NAMESPACE'*/  
-                    }
+                    
+                    sh 'kubectl apply -f ./manifests -n $NAMESPACE --kubeconfig .kube/config'
+                    
+                    sh 'aws configure set output text'
+                    sh 'aws eks list-clusters'
+                    sh 'kubectl config view'
+                    sh 'kubectl cluster-info --kubeconfig .kube/config'                
                 }
-            }
-        }
+            } 
+        }        
     }           
 }
