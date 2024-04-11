@@ -31,8 +31,8 @@ agent any
                 sh 'docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG && docker push $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
             }
         }
-        /*stage('Deploy EKS') {
-            environment { // import Jenkin global variables 
+        stage('Deploy EKS') {
+            /*environment { // import Jenkin global variables 
                 //KUBECONFIG = credentials("EKS_CONFIG")  
                 AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
                 AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
@@ -62,7 +62,7 @@ agent any
                         
                     }
                 }
-            }
-        }*/
+            }*/
+        }
     }           
 }
