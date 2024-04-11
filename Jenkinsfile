@@ -1,10 +1,10 @@
 pipeline {
     environment { //for docker
         DOCKER_ID = credentials('DOCKER_ID')
-        DOCKER_IMAGE_FRONT_END = "front-end"
+        DOCKER_IMAGE_FRONT_END = 'front-end'
         DOCKER_TAG = "${BUILD_ID}"
         BUILD_AGENT  = ""
-        NAMESPACE = credentials("NAMESPACE")
+        NAMESPACE = 'sockshop'
     }
 agent any
     stages {
@@ -23,7 +23,7 @@ agent any
         }
         stage('Push') {
             environment {
-                DOCKER_PASS = credentials("DOCKER_HUB_PASS")
+                DOCKER_PASS = credentials('DOCKER_HUB_PASS')
             }
             steps {
                 sh 'docker image tag $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:$DOCKER_TAG $DOCKER_ID/$DOCKER_IMAGE_FRONT_END:latest'
@@ -33,30 +33,30 @@ agent any
         }
         stage('Deploy EKS') {
             environment { // import Jenkin global variables 
-                //KUBECONFIG = credentials("EKS_CONFIG")  
+                //KUBECONFIG = credentials('EKS_CONFIG')  
                 AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
                 AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-                AWSREGION = "eu-west-3"
-                EKSCLUSTERNAME = "sock-shop-eks"
+                AWSREGION = 'eu-west-3'
+                EKSCLUSTERNAME = 'sock-shop-eks'
             }
             steps {
                 script {
                     dir('manifests') {
-                        sh "aws eks update-kubeconfig --name sock-shop-eks --region $AWSREGION"
-                        //sh "kubectl apply -f nginx-deployment.yaml"
-                        //sh "kubectl apply -f nginx-service.yaml"
+                        sh 'aws eks update-kubeconfig --name sock-shop-eks --region $AWSREGION'
+                        //sh 'kubectl apply -f nginx-deployment.yaml'
+                        //sh 'kubectl apply -f nginx-service.yaml'
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace $NAMESPACE'
                         // Define the namespace
-                        def NAMESPACE = "sockshop"
+                        def NAMESPACE = 'sockshop'
                         // Check if the namespace exists
-                        def namespaceExists = sh(script: "kubectl get namespace $NAMESPACE", returnStatus: true)
+                        def namespaceExists = sh(script: 'kubectl get namespace $NAMESPACE', returnStatus: true)
                         if (namespaceExists == 0) {
-                            echo "Namespace '$NAMESPACE' already exists."
+                            echo 'Namespace '$NAMESPACE' already exists.'
                         } else {
                             // Create the namespace
-                            sh "kubectl create namespace $NAMESPACE"
-                            echo "Namespace '$NAMESPACE' created."
+                            sh 'kubectl create namespace $NAMESPACE'
+                            echo 'Namespace '$NAMESPACE' created.'
                         }
                         sh 'ls'
                         sh 'kubectl apply -f ./deployment.yaml -n $NAMESPACE'
