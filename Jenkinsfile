@@ -41,28 +41,23 @@ agent any
             }
             steps {
                 script {
-                    // Define the namespace
-                    def namespace = credentials("NAMESPACE")
-
-                    // Check if the namespace exists
-                    def namespaceExists = sh(script: "kubectl get namespace \${namespace}", returnStatus: true)
-                    if (namespaceExists == 0) {
-                        echo "Namespace '\${namespace}' already exists."
-                    } else {
-                        // Create the namespace
-                        sh "kubectl create namespace \${namespace}"
-                        echo "Namespace '\${namespace}' created."
-                    }
-                }
-            }
-            steps {
-                script {
                     dir('manifests') {
                         sh "aws eks update-kubeconfig --name sock-shop-eks --region $AWSREGION"
                         //sh "kubectl apply -f nginx-deployment.yaml"
                         //sh "kubectl apply -f nginx-service.yaml"
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace $NAMESPACE'
+                        // Define the namespace
+                        def namespace = credentials("NAMESPACE")
+                        // Check if the namespace exists
+                        def namespaceExists = sh(script: "kubectl get namespace \${namespace}", returnStatus: true)
+                        if (namespaceExists == 0) {
+                            echo "Namespace '\${namespace}' already exists."
+                        } else {
+                            // Create the namespace
+                            sh "kubectl create namespace \${namespace}"
+                            echo "Namespace '\${namespace}' created."
+                        }
                         sh 'ls'
                         sh 'kubectl apply -f ./deployment.yaml -n $NAMESPACE'
                         sh 'kubectl apply -f ./service.yaml -n $NAMESPACE'
