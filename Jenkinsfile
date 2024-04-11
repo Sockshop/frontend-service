@@ -48,15 +48,15 @@ agent any
                         //sh 'kubectl get namespace'
                         //sh 'kubectl create namespace $NAMESPACE'
                         // Define the namespace
-                        def namespace = "sockshop"
+                        def NAMESPACE = "sockshop"
                         // Check if the namespace exists
-                        def namespaceExists = sh(script: "kubectl get namespace \${namespace}", returnStatus: true)
+                        def NAMESPACEExists = sh(script: "kubectl get namespace \${NAMESPACE}", returnStatus: true)
                         if (namespaceExists == 0) {
-                            echo "Namespace '\${namespace}' already exists."
+                            echo "Namespace '\${NAMESPACE}' already exists."
                         } else {
                             // Create the namespace
-                            sh "kubectl create namespace \${namespace}"
-                            echo "Namespace '\${namespace}' created."
+                            sh "kubectl create namespace \${NAMESPACE}"
+                            echo "Namespace '\${NAMESPACE}' created."
                         }
                         sh 'ls'
                         sh 'kubectl apply -f ./deployment.yaml -n $NAMESPACE'
