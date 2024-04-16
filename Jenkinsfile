@@ -38,6 +38,7 @@ agent any
                 AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
                 AWSREGION = "eu-west-3"
                 EKSCLUSTERNAME = credentials('EKS_CLUSTER')
+                
             }
             steps {
                 script {
@@ -52,13 +53,13 @@ agent any
                     sh 'aws configure set region $AWSREGION'
                     sh 'aws eks update-kubeconfig --name $EKSCLUSTERNAME --region $AWSREGION --kubeconfig .kube/config'
                     // Check if the namespace exists
-                        def namespaceExists = sh(script: "kubectl get namespace \$NAMESPACE", returnStatus: true)
+                        def namespaceExists = sh(script: "kubectl get namespace $NAMESPACE", returnStatus: true)
                         if (namespaceExists == 0) {
-                            echo "Namespace \$NAMESPACE already exists."
+                            echo "Namespace $NAMESPACE already exists."
                         } else {
                             // Create the namespace
-                            sh 'kubectl create namespace \$NAMESPACE'
-                            echo "Namespace \$NAMESPACE created."
+                            sh 'kubectl create namespace $NAMESPACE'
+                            echo "Namespace $NAMESPACE created."
                         }
                     
                     sh 'kubectl apply -f ./manifests -n $NAMESPACE --kubeconfig .kube/config'
