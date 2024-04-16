@@ -38,7 +38,7 @@ agent any
                 AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
                 AWSREGION = "eu-west-3"
                 EKSCLUSTERNAME = credentials('EKS_CLUSTER')
-                
+                NAMESPACE = "sockshop"
             }
             steps {
                 script {
